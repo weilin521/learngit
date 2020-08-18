@@ -1,0 +1,73 @@
+触屏实际是一个ADC转换器
+
+
+/*
+ * Event types
+ */
+
+#define EV_SYN          0x00         //同步事件
+#define EV_KEY          0x01         //按键事件
+#define EV_REL          0x02         //相对坐标(鼠标)
+#define EV_ABS          0x03         //绝对坐标，(触摸屏)
+#define EV_MSC          0x04         //其它
+#define EV_SW           0x05
+#define EV_LED          0x11         //LED
+#define EV_SND          0x12         //声音
+#define EV_REP          0x14         //Repeat//重复类事件
+#define EV_FF           0x15         //力反馈 
+#define EV_PWR          0x16         //电源
+#define EV_FF_STATUS    0x17         //状态
+#define EV_MAX          0x1f
+#define EV_CNT          (EV_MAX+1)
+
+
+
+
+触摸屏使用过程：
+1、按下，产生中断（INT_TC(Touch Change触摸变化)）
+2、在中断处理程序里，启动ADC转换x,y坐标值
+3、ADC结束，产生ADC中断
+4、在ADC中断处理函数里面，上报（input_event），启动定时器
+5、定时器时间到，再次启动ADC（处理长按、滑动）
+6、松开，
+
+使能ADC
+clk_get(NULL, "lcd");
+clk_enable(info->clk);
+
+
+测试2th~3.5th：
+1.  make menuconfig 去掉原来的触摸屏驱动程序
+
+
+
+
+make uImage
+使用新内核驱动
+
+2. insmod s3c_ts.ko
+按下/松开触摸笔
+
+测试2th~3.5th：
+1.ls /dev/event*
+2.insmod s3c_ts.ko
+3.ls /dev/event*
+4.hexdump
+
+# hexdump /dev/event0
+                     秒              微秒       type
+0000000 0440 0000 bab6 0002 0003 0000 01d8 0000
+0000010 0440 0000 bacb 0002 0000 0000 0000 0000
+0000020 0440 0000 bacf 0002 0003 0001 011b 0000
+0000030 0440 0000 bad2 0002 0000 0000 0000 0000
+0000040 0440 0000 bad6 0002 0003 0018 0001 0000
+0000050 0440 0000 bad9 0002 0000 0000 0000 0000
+0000060 0440 0000 bade 0002 0001 014a 0001 0000
+0000070 0440 0000 bae0 0002 0000 0000 0000 0000
+0000080 0440 0000 fc28 0002 0003 0000 01d9 0000
+0000090 0440 0000 fc41 0002 0000 0000 0000 0000
+00000a0 0440 0000 4a1c 0003 0003 0001 011c 0000
+00000b0 0440 0000 4a30 0003 0000 0000 0000 0000
+00000c0 0440 0000 983e 0003 0003 0001 011d 0000
+
+

@@ -1,0 +1,56 @@
+tslib编译使用方法:20141111:martyr
+
+ apt-get install autoconf（或autoconf2.13）
+ apt-get install automake
+ apt-get install libtool
+
+1. tar -zxvf tslib-1.4.tar.gz
+2. cd tslib
+
+第二步：进入tslib之后关键是要设置交叉编译环境（下面是根据我自己的实际情况所添加的）——如果不设置交叉编译环境，在移植到开发板时，执行./ts_calibrate程序时会出现以下错误：
+
+./ts_calibrate: line 1: syntax error :”(” unexpected.
+$export PATH=$PATH:/usr/local/arm/4.3.2/bin
+$export CC=arm-linux-gcc
+$export CXX=arm-linux-g++
+
+3. ./autogen.sh
+3.1 mkdir tmp
+4. echo "ac_cv_func_malloc_0_nonnull=yes">arm-linux.cache
+5. ./configure --host=arm-linux --cache-file=arm-linux.cache  --prefix=$(pwd)/tmp
+6. make
+    执行 make 出错
+    error: call to ‘__open_missing_mode’ declared with attribute error: open with O_CREAT in second argument needs 3 arguments
+    解决方法:
+    vim ./tests/ts_calibrate.c +227 open();
+    修改cal_fd = open ("/etc/pointercal", O_CREAT | O_RDWR ,0）(据说是交叉编译器版本问题)
+7. make install
+cd tmp
+8.cp * ./../../../fs_first/ -rfd
+
+9.安装lcd.ko s3c_ts.ko
+insmod cfbfillrect.ko
+insmod cfbimgblt.ko
+insmod cfbcopyarea.ko
+insmod lcd.ko
+insmod s3c_ts.ko
+
+
+10.
+1. vi /etc/ts.conf
+修改/etc/ts.conf文件中的第一行(去掉#和空格)
+# module_raw input
+改为
+module_raw input
+2.
+export TSLIB_TSDEVICE=/dev/event0   
+export TSLIB_CALIBFILE=/etc/pointercal   
+export TSLIB_CONFFILE=/etc/ts.conf  
+export TSLIB_PLUGINDIR=/lib/ts  
+export TSLIB_FBDEVICE=/dev/fb0  
+export TSLIB_CONSOLEDEVICE=none  
+
+cp * /lib -rfd
+
+ts_calibrate
+ts_test

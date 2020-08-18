@@ -1,0 +1,53 @@
+1. 分配一个input_dev 结构体
+2. 设置
+3. 注册
+4. 硬件相关的代码，比如在中断服务程序里上报事件
+
+
+
+
+struct input_dev {
+
+	void *private;
+
+	const char *name;
+	const char *phys;
+	const char *uniq;
+	struct input_id id;
+
+	unsigned long evbit[NBITS(EV_MAX)];      //表示能产生哪类事件
+	unsigned long keybit[NBITS(KEY_MAX)];  //表示能产生哪些按键（键盘）
+	unsigned long relbit[NBITS(REL_MAX)];    //表示能产生哪些相对位移事件，x,y，滚轮（鼠标）
+	unsigned long absbit[NBITS(ABS_MAX)];  //表示能产生哪些绝对位移事件，x，y（触摸屏）
+	unsigned long mscbit[NBITS(MSC_MAX)];
+	unsigned long ledbit[NBITS(LED_MAX)];
+	unsigned long sndbit[NBITS(SND_MAX)];
+	unsigned long ffbit[NBITS(FF_MAX)];
+	unsigned long swbit[NBITS(SW_MAX)];
+
+测试：
+1.
+# hexdump /dev/event1      (open(/dev/event1),read(),)
+	     秒	      微秒        类    code     value
+0000000 011e 0000 eaaa 0000 0001 0026 0001 0000(按下)
+0000010 011e 0000 eab6 0000 0000 0000 0000 0000
+0000020 011e 0000 bd3c 0003 0001 0026 0000 0000(松开)
+0000030 011e 0000 bd46 0003 0000 0000 0000 0000
+
+
+2.如果没有启动QT：
+ cat /dev/tty1
+按：s2,s3,s4
+就可以得到 ls
+
+或者：
+exec 0</dev/tty1
+然后可以使用按键来输入
+
+
+3.如果已经启动了QT:
+可以点开记事本
+然后按：s2,s3,s4
+就可以看到字幕
+
+
