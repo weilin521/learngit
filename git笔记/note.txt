@@ -1,0 +1,52 @@
+我是windows7的系统，vi完当前文件，可以看到当前文件。由于您的教程是Mac系统，看到您这边enter之后就回去了，可以继续用Git操作其他命令，我这边不管用“enter”键或者“Ctrl+C”都没有回到原来那个“$”开头的操作界面。有时候还会卡在这儿，半天不动。想问下您怎么回事.
+
+这是VIM编辑器的用法，你可以搜一下 先摁“esc”这个键，然后输入“：wq”，就是保存退出的意思，就退回去了，你输入上面的三个字符的时候，会在左下角看到你输入的内容的
+
+一、创建版本库
+mkdir learngit                                                     创建文件夹learngit
+cd learngit                                                          打开文件夹
+pwd                                                                    命令用于显示当前目录
+git init                                                                 把这个目录变成Git可以管理的仓库，初始化本地仓库：
+ls                                                                         用来显示目标列表
+git add                                                                可以将xx文件添加到暂存区
+git commit -m "注释内容"                                   该命令的效果是作用 将暂存区的内容提交到本地版本库的当前分支
+vi + 文件名  ：                                                     创建新文件txt
+vim + 文件名 ：                                                   修改文件txt
+ 二、时光机穿梭         
+cd g:/                                                                  使用git在指定磁盘创建文件(进入g光盘)
+git status                                                             可以让我们时刻掌握仓库当前的状态
+git diff                                                                 顾名思义就是查看difference，看看具体修改了什么内容
+三、版本回退
+git log                                                                 显示从最近到最远的提交日志，我们可以看到最近3次提交(如果嫌输出信息太多，看得眼花缭乱的，可以试试加上--pretty=oneline参数git log --pretty=oneline)
+git reset(git reset --hard+(commit id)/HEAD^a)               把readme.txt回退到上一个版本
+cat readme.txt                                                     一次显示整个文件
+git reflog                                                             用来记录你的每一次命令(即查看命令历史)
+四、工作区和暂存区
+工作区（Working Directory）
+版本库（Repository）
+git diff HEAD -- readme.txt                                 命令可以查看工作区和版本库里面最新版本的区别
+五、撤销修改
+git checkout -- file                                               可以丢弃工作区的修改(命令git checkout -- readme.txt意思就是，把readme.txt文件在工作区的修改全部撤销,就是让这个文件回到最近一次git commit或git add时的状态。)
+git reset HEAD  file                                              可以把暂存区的修改撤销掉（unstage），重新放回工作区(git reset命令既可以回退版本，也可以把暂存区的修改回退到工作区。当我们用HEAD时，表示最新的版本。)
+六、删除文件
+rm/(rm test.txt)                                                    把文件(test.txt)删了
+git rm                                                                   删除该文件(git rm test.txt)
+git checkout                                                         其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”(操作git checkout -- test.txt)
+先手动删除文件，然后使用git rm <file>和git add<file>效果是一样的。
+另一种情况是删错了，因为版本库里还有呢，所以可以很轻松地把误删的文件恢复到最新版本：git checkout
+七、添加远程仓库
+git remote add origin git@server-name:path/repo-name.git  关联远程仓库
+git push -u origin master                                     第一次推送master分支的所有内容(此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；)
+八、从远程仓库克隆
+git clone                                                               克隆命令。
+git clone git@github.com:weilin521/gitskills.git
+如果有多个人协作开发，那么每个人各自从远程克隆一份就可以了。
+九、创建与合并分支
+git branch                                                             查看当前分支
+git branch <name>                                              创建分支(如git branch dev)
+git checkout <name>                                           切换分支(如git checkout dev)
+git checkout -b <name>                                      创建+切换分支(git checkout命令加上-b参数表示创建并切换，相当于以下两条命令：$ git branch dev      $ git checkout dev)
+git merge <name>                                               合并某分支到当前分支(git merge dev)
+git branch -d <name>                                          删除分支 (git branch -d dev)
+十、解决冲突
+git log --graph                                                      命令可以看到分支合并图。
