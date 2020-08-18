@@ -1,0 +1,18 @@
+如果在Ubuntu中用apt-get命令安装软件是出现如下错误：
+
+E: 无法获得锁 /var/lib/dpkg/lock - open (11: 资源暂时不可用)
+E: 无法锁定管理目录(/var/lib/dpkg/)，是否有其他进程正占用它？
+
+
+则解决方法
+1、终端输入ps -aux命令，列出进程，找到含有apt-get 的进程，直接sudo kill PID解决。不过好像没找着qpt-get的进程。
+
+
+没办法，此方法不行，只能使用第二种解决方案
+
+2、
+强制解锁命令
+
+sudo rm /var/cache/apt/archives/lock
+
+sudo rm /var/lib/dpkg/lock

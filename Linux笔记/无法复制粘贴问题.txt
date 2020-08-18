@@ -1,0 +1,17 @@
+解决ubuntu（16.04版本）和windows电脑之间无法复制粘贴问题
+
+
+
+1.下载安装两个软件：
+
+sudo apt-get autoremove open-vm-tools
+
+sudo apt-get install open-vm-tools-desktop
+
+安装过程中，yes或者y一路通过。
+2.然后重启ubuntu就可以了。
+
+— 亲测有效，屡试不爽
+————————————————
+版权声明：本文为CSDN博主「phymat.nico」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/shixin_0125/article/details/106618028

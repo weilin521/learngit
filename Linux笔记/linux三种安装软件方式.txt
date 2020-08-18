@@ -1,0 +1,4 @@
+linux有三种安装软件或者服务的方式
+1、yum安装，rz  （yum install lrzsz -y）
+2、二进制软件包，jdk tomcat等，直接解压就可以 用
+3、编译安装，nginx

@@ -1,0 +1,11 @@
+在设备文件：/dev中
+文件c开头的表示字符设备，对于驱动程序来说他是c开头的，crw-rw----  1 root tty       7（主设备号）,   4 （次设备号）六月  8 04:58 vcs4
+一个“-”号表示常规文件
+“d”表示目录
+KERN_DIR = /fileshare/linux-2.6.22.6
+all:
+make -C $<KERN_DIR> M='pwd' modiles
+clean:
+make -C $<KERN_DIR> M='pwd' modules clean
+rm -rf modules.order
+obj-m     +=first_drv.o
